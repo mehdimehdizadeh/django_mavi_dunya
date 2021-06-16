@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block body %}
+<header id="masthead" class="site-header">
+    <div class="site-branding">
+        <h1 class="site-title"><a href="{% url 'index' %}" rel="home" style="color:#29adce">Mavi Dünyam</a></h1>	
+    </div>
+    <nav id="site-navigation" class="main-navigation" style="border-color:#29adce;">
+    <button class="menu-toggle" style="color:#29adce">Menu</button>
+    <a class="skip-link screen-reader-text" href="#content"style="color:#29adce">Skip to content</a>
+    <div class="menu-menu-1-container">
+        <ul id="menu-menu-1" class="menu">
+            <li><a href="{% url 'index' %}" class="color"style="color:#29adce !important;">Ana səhifə</a></li>
+            <li><a href="{% url 'about' %}"><font color="#29adce">Haqqında</font></a></li>
+            {% for cate in categories %}
+            <li><a href="/articles/category/{{cate.id}}"><font color="#29adce">{{cate.name}}</font></a></li>
+            {% endfor %}
+            <li><a href="#"><font color="#29adce">Qeydiyyat</font></a>
+                <ul class="sub-menu">
+                    {% if request.user.is_authenticated %}
+                    <li><a href="/user/logout">Çıxış</a></li>
+                    {% else %}
+					<li><a href="/user/login">Giriş</a></li>
+					
+					<li><a href="/user/register">Qeydiyyat</a></li>
+                    {% endif %}
+				</ul>
+            </li>
+            <li>
+            <form>
+                {% csrf_token %} 
+               <input type="text" name = "keyword" class="input-sm" maxlength="64" placeholder="Ara...">
+             <button type="submit" class="btn btn-danger">Ara</button>
+           </form>
+        </li>
+        </ul>
+      
+    </div>
+    </nav>
+    </header>
+<h3><font color="29adce">Qeydiyyat</font></h3>
+<hr color="29adce">
+<form method = "post">
+    {% csrf_token %}
+    {{ form|crispy}}
+    <br>
+    <button  style = "background-color: #29adce; color: rgb(255, 255, 255);">Qeydiyyatdan keç</button>
+</form>
+<br>
+  
+{% endblock body %}
